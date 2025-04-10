@@ -1,0 +1,24 @@
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True accelerate launch train_stage1.py \
+    --output_dir "outputs/kedit_stage1" \
+    --bert_model_name_or_path "bert-base-uncased" \
+    --qformer_name_or_path "bert-base-uncased" \
+    --language_model_name_or_path "meta-llama/Meta-Llama-3-8B-Instruct" \
+    --dataset_name="data/wizard_of_wikipedia" \
+    --dataset_config_name="knowledge" \
+    --remove_unused_columns=False \
+    --num_query_tokens=16 \
+    --do_train \
+    --per_device_train_batch_size="1" \
+    --gradient_accumulation_steps="16" \
+    --learning_rate="2e-4" --warmup_steps=10000 --weight_decay 0.05 \
+    --lr_scheduler_type="constant_with_warmup" \
+    --dataloader_num_workers="8" \
+    --num_train_epochs="1" \
+    --logging_steps="2000" \
+    --save_steps="10000" \
+    --save_total_limit="1" \
+    --low_cpu_mem_usage=True \
+    --tf32=True \
+    --bf16=True \
+    --deepspeed="configs/ds_config_zero2.json" \
+    --ddp_find_unused_parameters=False 

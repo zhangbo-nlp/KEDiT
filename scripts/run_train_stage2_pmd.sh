@@ -1,0 +1,24 @@
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True accelerate launch train_stage2_wow.py \
+    --output_dir "outputs/kedit_stage2_pmd" \
+    --model_path "outputs/kedit_stage1" \
+    --dataset_name="data/pubmed_dialog" \
+    --remove_unused_columns=False \
+    --num_query_tokens="16" \
+    --attn_scalar="2" \
+    --ffn_adapter_scalar="4" \
+    --do_train --do_eval --do_predict \
+    --per_device_train_batch_size="1" \
+    --per_device_eval_batch_size="2" \
+    --gradient_accumulation_steps="16" \
+    --learning_rate="1e-4" --warmup_ratio=0.1 --weight_decay 0.05 \
+    --lr_scheduler_type='cosine' \
+    --dataloader_num_workers="4" \
+    --num_train_epochs="3" \
+    --save_strategy="epoch" \
+    --evaluation_strategy="epoch" \
+    --load_best_model_at_end=True \
+    --metric_for_best_model="eval_loss" \
+    --save_total_limit="1" \
+    --tf32=True \
+    --bf16=True \
+    --ddp_find_unused_parameters=False 
